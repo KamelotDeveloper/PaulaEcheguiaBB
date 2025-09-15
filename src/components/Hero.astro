@@ -1,0 +1,67 @@
+<section
+  id="main"
+  class="relative min-h-screen flex items-center justify-center bg-black text-white px-6 pt-16 overflow-hidden"
+>
+  <!-- VIDEO DE FONDO -->
+  <video
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+    class="absolute inset-0 w-full h-full object-cover"
+  >
+    <source src="https://www.pexels.com/download/video/8782951/" type="video/mp4" />
+    
+    <!-- Fallback -->
+  </video>
+
+  <!-- CAPA OSCURA PARA CONTRASTE -->
+  <div class="absolute inset-0 bg-black/50"></div>
+
+  <!-- CONTENIDO -->
+  <div class="relative z-10 max-w-3xl text-center">
+    <img
+      src="https://firebasestorage.googleapis.com/v0/b/canteras-nini.appspot.com/o/PaulaBB%2FLogoPE.png?alt=media&token=9a75ee1f-a1bb-4e07-8052-f8e4de82fbd5"
+      alt="Paula Echeguia Business Broker"
+      class="w-40 md:w-64 lg:w-80 xl:w-96 max-w-full h-auto object-contain mx-auto"
+    />
+    <div class="mt-6 flex flex-col md:flex-row justify-center gap-4">
+      <a
+        target="_blank"
+        href="Listings Paula"
+        class="px-6 py-3 bg-white text-black rounded-2xl hover:bg-[#d4ae6d]"
+      >Search Businesses</a>
+      <a
+        href="/contact"
+        class="px-6 py-3 border border-white rounded-2xl hover:bg-[#d4ae6d]"
+      >Contact Paula</a>
+    </div>
+  </div>
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const navbar = document.querySelector("#navbar");
+  const heroContent = document.querySelector("#main .relative.z-10");
+
+  if (navbar) {
+    // Animación navbar: fade + slide desde arriba
+    navbar.classList.add("transition-all", "duration-700", "-translate-y-10", "opacity-0");
+    setTimeout(() => {
+      navbar.classList.remove("-translate-y-10", "opacity-0");
+      navbar.classList.add("translate-y-0", "opacity-100");
+    }, 300);
+  }
+
+  if (heroContent) {
+    // Animación hero: fade + slide desde abajo
+    heroContent.classList.add("transition-all", "duration-1000", "translate-y-6", "opacity-0");
+    setTimeout(() => {
+      heroContent.classList.remove("translate-y-6", "opacity-0");
+      heroContent.classList.add("translate-y-0", "opacity-100");
+    }, 600);
+  }
+});
+</script>
+
+</section>
+

@@ -1,0 +1,30 @@
+---
+const { title = "Paula Echeguia - Business Broker", description = "Confidential advisory for buying and selling businesses in Miami." } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- SEO / OG -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet" />
+
+  </head>
+  <body class="font-sans text-gray-900 bg-white">
+    <a href="#main" class="sr-only focus:not-sr-only">Skip to content</a>
+    <slot />
+  </body>
+</html>
+

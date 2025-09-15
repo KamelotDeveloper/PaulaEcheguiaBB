@@ -1,0 +1,85 @@
+<nav id="navbar" class="fixed top-0 left-0 w-full bg-transparent shadow-none z-50 transition-all duration-300">
+  <div class="max-w-6xl mx-auto px-4 flex justify-between items-center h-16">
+    <a href="/" id="logo" class="font-serif text-xl font-bold text-[#d4ae6d]">Paula Echeguia</a>
+
+    <button id="menu-btn" class="md:hidden">☰</button>
+    <div id="menu" class="hidden md:flex space-x-6">
+      <a href="/" class="hover:underline text-[#d4ae6d]">Home</a>
+      <a href="/about" class="hover:underline text-[#d4ae6d]">About</a>
+      <a href="/insights" class="hover:underline text-[#d4ae6d]">Insights</a>
+      <a href="/contact" class="hover:underline text-[#d4ae6d]">Contact</a>
+      <a href="[CHANGEME]" target="_blank" rel="noopener" class="ml-4 px-4 py-2 bg-black text-white rounded-2xl hover:bg-[#d4ae6d] hover:text-black">Search Businesses</a>
+    </div>
+  </div>
+</nav>
+
+<script>
+  
+document.addEventListener("DOMContentLoaded", () => {
+  const navbar = document.querySelector("#navbar");
+  const hero = document.querySelector("#main");
+  const menu = document.querySelector("#menu");
+  const btn = document.querySelector("#menu-btn");
+
+  if (!navbar || !hero) return;
+
+  btn?.addEventListener("click", () => {
+    menu?.classList.toggle("hidden");
+  });
+
+  function updateNavbar() {
+    const heroBottom = hero.getBoundingClientRect().bottom + window.scrollY;
+
+    if (window.scrollY >= heroBottom) {
+      // Pasó el hero -> fondo blanco + links oscuros + sombra
+      navbar.classList.remove("bg-transparent", "shadow-none");
+      navbar.classList.add("bg-white", "shadow-lg");
+
+      navbar.querySelectorAll("a").forEach(a => {
+        if (!a.classList.contains("bg-black")) { // no cambiar botón destacado
+          a.classList.remove("text-[#d4ae6d]");
+          a.classList.add("text-black");
+        }
+      });
+    } else {
+      // Dentro del hero -> transparente + links color original
+      navbar.classList.remove("bg-white", "shadow-lg");
+      navbar.classList.add("bg-transparent", "shadow-none");
+
+      navbar.querySelectorAll("a").forEach(a => {
+        if (!a.classList.contains("bg-black")) {
+          a.classList.remove("text-black");
+          a.classList.add("text-[#d4ae6d]");
+        }
+      });
+    }
+  }
+
+  window.addEventListener("scroll", updateNavbar);
+  window.addEventListener("resize", updateNavbar);
+  updateNavbar(); // inicial
+});
+document.addEventListener("DOMContentLoaded", () => {
+  const navbar = document.querySelector("#navbar");
+  const heroContent = document.querySelector("#main .relative.z-10");
+
+  if (navbar) {
+    // Animación navbar: fade + slide desde arriba
+    navbar.classList.add("transition-all", "duration-700", "-translate-y-10", "opacity-0");
+    setTimeout(() => {
+      navbar.classList.remove("-translate-y-10", "opacity-0");
+      navbar.classList.add("translate-y-0", "opacity-100");
+    }, 300);
+  }
+
+  if (heroContent) {
+    // Animación hero: fade + slide desde abajo
+    heroContent.classList.add("transition-all", "duration-1000", "translate-y-6", "opacity-0");
+    setTimeout(() => {
+      heroContent.classList.remove("translate-y-6", "opacity-0");
+      heroContent.classList.add("translate-y-0", "opacity-100");
+    }, 600);
+  }
+});
+</script>
+
