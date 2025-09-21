@@ -45,10 +45,15 @@
 <script is:inline>
 document.addEventListener("DOMContentLoaded", () => {
   const navbar      = document.querySelector("#navbar");
-  const hero        = document.querySelector("#main"); // sección hero opcional
+  const hero        = document.querySelector("#main");
   const btn         = document.querySelector("#menu-btn");
   const mobilePanel = document.querySelector("#mobile-panel");
   const overlay     = document.querySelector("#overlay");
+
+  function closeMenu() {
+    mobilePanel.classList.add("translate-x-full");
+    overlay.classList.add("hidden");
+  }
 
   // --- Menú lateral móvil ---
   btn?.addEventListener("click", () => {
@@ -56,13 +61,18 @@ document.addEventListener("DOMContentLoaded", () => {
     overlay.classList.remove("hidden");
   });
 
-  // Cerrar al tocar fuera del menú
-  overlay?.addEventListener("click", () => {
-    mobilePanel.classList.add("translate-x-full");
-    overlay.classList.add("hidden");
+  // Cerrar tocando cualquier lugar fuera del panel
+  document.addEventListener("click", (e) => {
+    if (
+      !mobilePanel.contains(e.target) &&   // click fuera del panel
+      !btn.contains(e.target) &&           // no en el botón hamburguesa
+      !mobilePanel.classList.contains("translate-x-full")
+    ) {
+      closeMenu();
+    }
   });
 
-  // --- Cambio de navbar al hacer scroll (global) ---
+  // --- Cambio de navbar al hacer scroll ---
   function updateNavbar() {
     if (!navbar) return;
     const trigger = hero ? hero.offsetHeight : 50;
@@ -90,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("scroll", updateNavbar);
   window.addEventListener("resize", updateNavbar);
-  updateNavbar(); // inicial
+  updateNavbar();
 });
 </script>
 
