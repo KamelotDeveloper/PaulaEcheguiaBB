@@ -1,4 +1,5 @@
-<nav id="navbar" class="fixed top-0 left-0 w-full bg-transparent shadow-none z-50 transition-all duration-300">
+<nav id="navbar"
+     class="fixed top-0 left-0 w-full bg-transparent shadow-none z-50 transition-all duration-300">
   <div class="max-w-6xl mx-auto px-4 flex justify-between items-center h-16">
     <!-- Logo -->
     <a href="/" id="logo" class="font-serif text-xl font-bold text-[#d4ae6d]">
@@ -25,8 +26,7 @@
 
   <!-- Panel lateral móvil -->
   <div id="mobile-panel"
-       class="fixed top-8 right-0 h-full w-64 bg- text-black transform translate-x-full transition-transform duration-300 ease-in-out md:hidden z-50 p-6 space-y-6">
-    <button id="close-panel" class="text-2xl absolute top-4 right-4">✕</button>
+       class="fixed top-0 right-0 h-full w-64 bg-white text-black transform translate-x-full transition-transform duration-300 ease-in-out md:hidden z-50 p-6 space-y-6">
     <a href="/" class="block hover:underline">Home</a>
     <a href="/about" class="block hover:underline">About</a>
     <a href="/insights" class="block hover:underline">Insights</a>
@@ -37,39 +37,37 @@
     </a>
   </div>
 
-  <!-- Overlay oscuro -->
+  <!-- Overlay oscuro (más opacidad para mayor contraste) -->
   <div id="overlay"
-       class="fixed inset-0 bg-black bg-opacity-50 hidden md:hidden z-40"></div>
+       class="fixed inset-0 bg-black bg-opacity-90 hidden md:hidden z-40"></div>
 </nav>
 
-<script>
+<script is:inline>
 document.addEventListener("DOMContentLoaded", () => {
-  const navbar = document.querySelector("#navbar");
-  const hero = document.querySelector("#main"); // sección hero (para cambio de color)
-  const btn = document.querySelector("#menu-btn");
+  const navbar      = document.querySelector("#navbar");
+  const hero        = document.querySelector("#main"); // sección hero opcional
+  const btn         = document.querySelector("#menu-btn");
   const mobilePanel = document.querySelector("#mobile-panel");
-  const overlay = document.querySelector("#overlay");
-  const closePanel = document.querySelector("#close-panel");
+  const overlay     = document.querySelector("#overlay");
 
   // --- Menú lateral móvil ---
-  btn.addEventListener("click", () => {
+  btn?.addEventListener("click", () => {
     mobilePanel.classList.remove("translate-x-full");
     overlay.classList.remove("hidden");
   });
 
-  function closeMenu() {
+  // Cerrar al tocar fuera del menú
+  overlay?.addEventListener("click", () => {
     mobilePanel.classList.add("translate-x-full");
     overlay.classList.add("hidden");
-  }
-  closePanel.addEventListener("click", closeMenu);
-  overlay.addEventListener("click", closeMenu);
+  });
 
-  // --- Cambio de navbar al hacer scroll ---
+  // --- Cambio de navbar al hacer scroll (global) ---
   function updateNavbar() {
-    if (!navbar || !hero) return;
-    const heroBottom = hero.getBoundingClientRect().bottom + window.scrollY;
+    if (!navbar) return;
+    const trigger = hero ? hero.offsetHeight : 50;
 
-    if (window.scrollY >= heroBottom) {
+    if (window.scrollY >= trigger) {
       navbar.classList.remove("bg-transparent", "shadow-none");
       navbar.classList.add("bg-white", "shadow-lg");
       navbar.querySelectorAll("a").forEach(a => {
