@@ -1,0 +1,92 @@
+---
+// src/components/AnimatedCounterGroup.astro
+
+const defaultItems = [
+    { value: 350, label: "closed businesses", suffix: "+", delay: 0 },
+    { value: 40, label: "Business Served", suffix: "+", delay: 100 },
+    { value: 1000, label: "Customer Testimonials", suffix: "+", delay: 200 }
+];
+
+const {
+    items = defaultItems,
+    duration = 2500,
+    color = '#d4ae6d',
+    class: className,
+} = Astro.props;
+
+const hydrationStrategy = 'client:load'; 
+// 👈 Cambié a client:load para tener control total del scroll (visible hidrata antes)
+---
+
+<div 
+    class={`py-12 md:py-16 bg-white ${className || ''}`}
+    id="animated-counter-section"
+>
+    <div class="container mx-auto px-4 flex flex-col md:flex-row justify-around items-start md:space-x-4 space-y-8 md:space-y-0">
+        
+        {items.map((item, index) => (
+            <div 
+                class="flex flex-col items-center p-4 w-full opacity-0 transition-opacity duration-700"
+                data-target-value={item.value}
+                data-duration={duration}
+                data-delay={item.delay}
+                data-index={index}
+            >
+                <div class="text-6xl md:text-7xl font-extrabold" style={`color: ${color};`}>
+                    <span class="count-up-value tabular-nums">0</span>
+                    <span class="text-4xl align-top">{item.suffix}</span>
+                </div>
+                
+                <p class="mt-2 text-xl font-medium text-gray-700 uppercase tracking-wider text-center">
+                    {item.label}
+                </p>
+            </div>
+        ))}
+    </div>
+</div>
+
+<script define:vars={{ hydrationStrategy }}>
+    const easeOutQuad = (t) => 1 - (1 - t) * (1 - t);
+
+    function startCountUp(element, start, end, duration) {
+        let startTime = null;
+        const step = (timestamp) => {
+            if (!startTime) startTime = timestamp;
+            const elapsed = timestamp - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easedProgress = easeOutQuad(progress);
+            const currentValue = Math.floor(start + (end - start) * easedProgress);
+            element.textContent = currentValue.toLocaleString('en-US');
+            if (progress < 1) window.requestAnimationFrame(step);
+        };
+        window.requestAnimationFrame(step);
+    }
+
+    const counters = document.querySelectorAll('[data-target-value][data-index]');
+
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const container = entry.target;
+                const element = container.querySelector('.count-up-value');
+                const end = parseInt(container.dataset.targetValue, 10);
+                const duration = parseInt(container.dataset.duration, 10);
+                const delay = parseInt(container.dataset.delay, 10);
+
+                // Fade-in
+                container.style.opacity = '1';
+
+                setTimeout(() => {
+                    startCountUp(element, 0, end, duration);
+                }, delay);
+
+                // Desactivar observer para que no se reinicie la animación
+                obs.unobserve(container);
+            }
+        });
+    }, {
+        threshold: 0.3 // 👈 El % visible del elemento para activar animación
+    });
+
+    counters.forEach(container => observer.observe(container));
+</script>
