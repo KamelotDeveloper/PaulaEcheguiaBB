@@ -8,7 +8,7 @@ import Galeria from "../components/Galeria.astro";
 <Base>
   <Nav />
 
-  <main class="px-6 pt-20 max-w-6xl mx-auto">
+  <main class="px-6 pt-20 max-w-6xl mx-auto fade-in-left">
     <h1 class="font-serif text-4xl mb-8 text-center md:text-left flex justify-center">
       About Paula
     </h1>
@@ -54,7 +54,23 @@ import Galeria from "../components/Galeria.astro";
         </p>
       </div>
     </div>
-    <Galeria />
+    <style>
+/* Animación de entrada (igual al Formulario A) */
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.fade-in-left {
+  animation: fadeInLeft 1.5s ease-out forwards;
+}
+</style>
   </main>
 
   <Footer />

@@ -1,0 +1,95 @@
+---
+const images = [
+  "/22.webp",
+  "/33.webp",
+  "/44.webp",
+  "/5.webp",
+  "/6.webp",
+  "/7.webp",
+];
+---
+
+<!-- Carrusel reutilizable -->
+<div class="carousel relative overflow-hidden w-full flex flex-col items-center">
+  <!-- Pista de imágenes -->
+  <div class="carousel-track flex transition-transform duration-700 ease-in-out w-full">
+    {images.map((src) => (
+      <div class="w-full flex-shrink-0 flex justify-center items-center">
+        <img
+          src={src}
+          alt="Galería"
+          class="max-h-80 w-auto object-contain"
+        />
+      </div>
+    ))}
+  </div>
+
+  <!-- Dots de navegación manual -->
+  <div class="carousel-dots flex gap-2 mt-3">
+    {images.map((_, i) => (
+      <button
+        class="h-2 w-2 rounded-full bg-gray-400 data-[active=true]:bg-[#d4ae6d] transition-colors"
+        data-index={i}
+        aria-label={`Ir a imagen ${i + 1}`}
+      ></button>
+    ))}
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // Selecciona cada carrusel por separado
+  document.querySelectorAll(".carousel").forEach((carousel) => {
+    const track = carousel.querySelector(".carousel-track");
+    const dots = carousel.querySelectorAll(".carousel-dots button");
+    if (!track || !dots.length) return;
+
+    const slides = track.children.length;
+    let index = 0;
+    let interval;
+
+    // 📌 Lee velocidad personalizada o usa un default
+    const speed = parseInt(carousel.dataset.speed) || 4300;
+
+    function goToSlide(i) {
+      index = (i + slides) % slides;
+      track.style.transform = `translateX(-${index * 100}%)`;
+      dots.forEach((d, idx) => (d.dataset.active = idx === index));
+    }
+
+    function startAuto() {
+      interval = setInterval(() => goToSlide(index + 1), speed);
+    }
+    function stopAuto() {
+      clearInterval(interval);
+    }
+
+    // Dots manuales
+    dots.forEach((dot, i) => {
+      dot.addEventListener("click", () => {
+        stopAuto();
+        goToSlide(i);
+        startAuto();
+      });
+    });
+
+    // Swipe en móvil
+    let startX = 0;
+    track.addEventListener("touchstart", (e) => {
+      if (!e.touches?.[0]) return;
+      stopAuto();
+      startX = e.touches[0].clientX;
+    });
+    track.addEventListener("touchend", (e) => {
+      if (!e.changedTouches?.[0]) return;
+      const diff = startX - e.changedTouches[0].clientX;
+      if (diff > 50) goToSlide(index + 1);
+      else if (diff < -50) goToSlide(index - 1);
+      startAuto();
+    });
+
+    goToSlide(0);
+    startAuto();
+  });
+});
+</script>
