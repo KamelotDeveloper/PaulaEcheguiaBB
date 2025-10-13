@@ -1,0 +1,150 @@
+<section class="carousel-wrapper relative">
+  <div class="carousel opacity-0 translate-x-10 transition-all duration-700 ease-out" id="carousel">
+    <div class="carousel-item">
+      <img src="/a1.webp" alt="1a" />
+      <p>Performance Glass</p>
+    </div>
+    <div class="carousel-item">
+      <img src="/a2.webp" alt="2a" />
+      <p>Roof Maintenance</p>
+    </div>
+    <div class="carousel-item">
+      <img src="/a3.webp" alt="3a" />
+      <p>Blue Hammer</p>
+    </div>
+    <div class="carousel-item">
+      <img src="/a4.webp" alt="4a" />
+      <p>Earl W Johnston </p>
+    </div>
+    <div class="carousel-item">
+      <img src="/a5.webp" alt="5a" />
+      <p>Joe Cole Plumbing</p>
+    </div>
+    <div class="carousel-item">
+      <img src="/a6.webp" alt="6a" />
+      <p>Florida Real Estate School </p>
+    </div>
+    <div class="carousel-item">
+      <img src="/a7.webp" alt="7a" />
+      <p>Florida Property Management Solution</p>
+    </div>
+    <div class="carousel-item">
+      <img src="/a8.webp" alt="8a" />
+      <p>Canyon</p>
+    </div>
+    <div class="carousel-item">
+      <img src="/a9.webp" alt="9a" />
+      <p>Climate Control Service</p>
+    </div>
+    <div class="carousel-item">
+      <img src="/a10.webp" alt="10a" />
+      <p>FTL</p>
+    </div>
+    <div class="carousel-item">
+      <img src="/a11.webp" alt="a11" />
+      <p>Bagels Whit Deli</p>
+    </div>
+  </div>
+
+  <!-- Botones de navegación -->
+  <button id="prevBtn" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-3 rounded-full hidden md:block">
+    ◀
+  </button>
+  <button id="nextBtn" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-3 rounded-full hidden md:block">
+    ▶
+  </button>
+
+  <!-- Difuminados en los bordes -->
+  <div class="pointer-events-none absolute top-0 left-0 h-full w-20 bg-gradient-to-r from-white to-transparent rounded-tr-full rounded-br-full"></div>
+  <div class="pointer-events-none absolute top-0 right-0 h-full w-20 bg-gradient-to-l from-white to-transparent rounded-tl-full rounded-bl-full"></div>
+</section>
+
+<style>
+  .carousel-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 2rem 0;
+  }
+
+  .carousel {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 2rem;
+  }
+
+  .carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .carousel-item {
+    flex: 0 0 auto;
+    width: 300px;
+    text-align: center;
+    scroll-snap-align: center;
+  }
+
+  .carousel-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    display: block;
+    margin: 0 auto;
+    object-fit: cover;
+  }
+
+  .carousel-item p {
+    color: #d4ae6d;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .carousel-item {
+      width: 240px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .carousel-item {
+      width: 200px;
+    }
+  }
+</style>
+
+<script>
+  const carousel = document.getElementById("carousel");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+
+  // Navegación con botones (solo en desktop)
+  prevBtn.addEventListener("click", () => {
+    carousel.scrollBy({ left: -320, behavior: "smooth" });
+  });
+
+  nextBtn.addEventListener("click", () => {
+    carousel.scrollBy({ left: 320, behavior: "smooth" });
+  });
+
+  // Fade-in con IntersectionObserver
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.remove("opacity-0", "translate-x-10");
+          entry.target.classList.add("opacity-100", "translate-x-0");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.2 }
+  );
+
+  observer.observe(carousel);
+</script>
+
+
