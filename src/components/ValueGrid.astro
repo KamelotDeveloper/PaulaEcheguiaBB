@@ -5,7 +5,7 @@ import Galeria from "./Galeria.astro";
 import Intro from "./Intro.astro";
 ---
 
-<section class="px-6 py-16 max-w-6xl mx-auto">
+<section class="px-6 py-16 max-w-6xl mx-auto fade-in-left">
   <h2 class="font-serif text-3xl text-center mb-10">Why Work With Paula</h2>
   <div class="grid gap-6 md:grid-cols-3 mb-10">
     <div class="reveal p-6 border rounded-2xl shadow-soft">
@@ -30,28 +30,51 @@ import Intro from "./Intro.astro";
   </div>
   </section>
 
-<div class="mt-8 mb-8"> <h2 class="font-serif text-3xl text-center mb-8">Deals Closed by South Florida  M&A  Advisors</h2></div>
- 
-  <Carruseldeal />
- 
+  <section class="fade-in-left">
+   <div class="mt-8 mb-8"> <h2 class="font-serif text-3xl text-center mb-8">Deals Closed by South Florida  M&A  Advisors</h2></div>
+    <Carruseldeal />
+ </section>
   
  
+<style>
+  @keyframes fadeInLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
 
-  <style>
-/* Animación de entrada (igual al Formulario A) */
-@keyframes fadeInLeft {
-  0% {
+  /* Estado inicial oculto */
+  .fade-in-left {
     opacity: 0;
     transform: translateX(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
   }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
 
-.fade-in-left {
-  animation: fadeInLeft 1.5s ease-out forwards;
-}
+  /* Estado cuando aparece en pantalla */
+  .fade-in-left.show {
+    animation: fadeInLeft 1.5s ease-out forwards;
+  }
 </style>
+
+<script>
+  // Detectar elementos con la clase fade-in-left
+  const elements = document.querySelectorAll('.fade-in-left');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('show');
+        observer.unobserve(entry.target); // Evita que se repita
+      }
+    });
+  }, { threshold: 0.2 });
+
+  elements.forEach(el => observer.observe(el));
+</script>
+
 </section>

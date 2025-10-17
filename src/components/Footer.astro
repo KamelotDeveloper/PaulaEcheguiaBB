@@ -1,4 +1,4 @@
-<footer class="bg-gray-900 text-gray-300 text-sm mt-16">
+<footer class="bg-gray-900 text-gray-300 text-sm mt-16 fade-in-up">
   <div class="flex justify-center">
     <div class="max-w-6xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
 
@@ -67,5 +67,45 @@
 
     </div>
   </div>
+  <style>
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Estado inicial oculto */
+  .fade-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  /* Estado cuando aparece en pantalla */
+  .fade-in-up.show {
+    animation: fadeInUp 1.2s ease-out forwards;
+  }
+</style>
+
+<script>
+  const elementsUp = document.querySelectorAll('.fade-in-up');
+
+  const observerUp = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('show');
+        observerUp.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  elementsUp.forEach(el => observerUp.observe(el));
+</script>
+
 </footer>
 
